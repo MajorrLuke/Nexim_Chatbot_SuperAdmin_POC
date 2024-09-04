@@ -12,21 +12,34 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    const { _id, name, password, email } = await req.json();
+    const id = req.nextUrl.searchParams.get('id');
+    if (!id) {
+      return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
+    }
+
+    const { name, password, email, role, tenant } = await req.json();
 
     const client = await clientPromise;
     const db = client.db(process.env.MONGODB_DB_NAME);
     const usersCollection = db.collection('users');
 
-    const updateFields: { name: string; email: string; password?: string } = { name, email };
+    const updateFields: { name: string; email: string; password?: string; role?: string; tenant?: number } = { name, email };
 
     if (password) {
       const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
       updateFields.password = hashedPassword;
     }
 
+    if (role) {
+      updateFields.role = role;
+    }
+
+    if (tenant) {
+      updateFields.tenant = tenant;
+    }
+
     const result = await usersCollection.updateOne(
-      { _id: new ObjectId(_id) },
+      { _id: new ObjectId(id) },
       { $set: updateFields }
     );
 

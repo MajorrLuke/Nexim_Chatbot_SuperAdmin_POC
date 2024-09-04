@@ -26,17 +26,22 @@ export async function POST(req: NextRequest) {
     }
 
     const client = await clientPromise;
-
     const db = client.db(process.env.MONGODB_DB_NAME);
+    const tenantsCollection = db.collection('tenants');
 
-    const result = await db.collection('tenants').insertOne({
+    // Find the highest existing id
+    const highestTenant = await tenantsCollection.findOne({}, { sort: { id: -1 } });
+    const newId = (highestTenant?.id || 0) + 1;
+
+    const result = await tenantsCollection.insertOne({
+      id: newId,
       name,
       email,
       tier,
       createdAt: new Date(),
     });
 
-    return NextResponse.json({ message: 'Tenant created successfully', tenantId: result.insertedId }, { status: 201 });
+    return NextResponse.json({ message: 'Tenant created successfully', tenantId: result.insertedId, id: newId }, { status: 201 });
   } catch (error) {
     console.error('Error creating tenant:', error);
     return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });

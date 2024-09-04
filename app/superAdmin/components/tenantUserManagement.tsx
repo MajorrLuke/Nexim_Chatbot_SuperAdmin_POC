@@ -26,6 +26,7 @@ const TenantUserManagement: React.FC = () => {
   const [userRole, setUserRole] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [tenantFilter, setTenantFilter] = useState('');
+  const [isLoadingUsers, setIsLoadingUsers] = useState(false);
 
   useEffect(() => {
     fetchTenants();
@@ -42,35 +43,59 @@ const TenantUserManagement: React.FC = () => {
   };
 
   const fetchUsers = async (tenantId: number) => {
-    const response = await fetch(`/api/users/fetch?tenantId=${tenantId}`);
-    if (response.ok) {
-      const data = await response.json();
-      setUsers(data);
-    } else {
-      console.error('Failed to fetch users');
+    try {
+      const response = await fetch(`/api/users/fetch?tenantId=${tenantId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setUsers(data);
+      } else {
+        console.error('Failed to fetch users');
+        // Optionally, set users to an empty array here as well
+        setUsers([]);
+      }
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      setUsers([]);
+    } finally {
+      setIsLoadingUsers(false);
     }
   };
 
   const handleTenantClick = (tenant: Tenant) => {
     setSelectedTenant(tenant);
+    setUsers([]);
+    setIsLoadingUsers(true);
     fetchUsers(tenant.id);
   };
 
-  const handleCreateUser = async (e: React.FormEvent) => {
+  const handleSaveUser = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('/api/users/create', {
-        method: 'POST',
+      const url = editingUser ? `/api/users/edit?id=${editingUser._id}` : '/api/users/create';
+      const method = editingUser ? 'PUT' : 'POST';
+      const userData: {
+        name: string;
+        email: string;
+        role: string;
+        tenant?: number;
+        password?: string;
+      } = {
+        name: userName,
+        email: userEmail,
+        role: userRole,
+        tenant: selectedTenant?.id,
+      };
+
+      if (userPassword) {
+        userData.password = userPassword;
+      }
+
+      const response = await fetch(url, {
+        method: method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          name: userName,
-          email: userEmail,
-          role: userRole,
-          password: userPassword,
-          tenant: selectedTenant?.id,
-        }),
+        body: JSON.stringify(userData),
       });
 
       if (response.ok) {
@@ -78,10 +103,10 @@ const TenantUserManagement: React.FC = () => {
         fetchUsers(selectedTenant!.id);
         resetUserForm();
       } else {
-        console.error('Failed to create user');
+        console.error(`Failed to ${editingUser ? 'update' : 'create'} user`);
       }
     } catch (error) {
-      console.error('Error creating user:', error);
+      console.error(`Error ${editingUser ? 'updating' : 'creating'} user:`, error);
     }
   };
 
@@ -121,7 +146,7 @@ const TenantUserManagement: React.FC = () => {
   );
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col animate-fade-in">
       <Flex className="flex-1 overflow-hidden">
         <div className="w-1/3 h-full pr-4 border-r-2 border-gray-300/20 overflow-y-auto">
           <Heading size="4" className="mb-2">Tenants</Heading>
@@ -145,7 +170,7 @@ const TenantUserManagement: React.FC = () => {
             </Button>
           ))}
         </div>
-        <div className="w-2/3 h-full overflow-y-auto pl-4 duration-300">
+        <div className="w-2/3 h-full overflow-y-auto pl-4">
           {selectedTenant && (
             <div className="animate-fade-in">
               <Flex justify="between" align="center" className="mb-4">
@@ -154,35 +179,41 @@ const TenantUserManagement: React.FC = () => {
                   <FaUserPlus className="mr-2" /> Add User
                 </Button>
               </Flex>
-              <Table.Root variant="surface">
-                <Table.Header>
-                  <Table.Row>
-                    <Table.ColumnHeaderCell>Name</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell>Email</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell>Role</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell>Actions</Table.ColumnHeaderCell>
-                  </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                  {users.map((user) => (
-                    <Table.Row key={user._id}>
-                      <Table.Cell>{user.name}</Table.Cell>
-                      <Table.Cell>{user.email}</Table.Cell>
-                      <Table.Cell>{user.role}</Table.Cell>
-                      <Table.Cell>
-                        <Flex gap="2">
-                          <IconButton onClick={() => handleEditUser(user)} variant="soft">
-                            <FaEdit />
-                          </IconButton>
-                          <IconButton onClick={() => handleDeleteUser(user._id)} color="red" variant="soft">
-                            <FaTrash />
-                          </IconButton>
-                        </Flex>
-                      </Table.Cell>
+              {isLoadingUsers ? (
+                <p>Loading users...</p>
+              ) : users.length > 0 ? (
+                <Table.Root variant="surface">
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.ColumnHeaderCell>Name</Table.ColumnHeaderCell>
+                      <Table.ColumnHeaderCell>Email</Table.ColumnHeaderCell>
+                      <Table.ColumnHeaderCell>Role</Table.ColumnHeaderCell>
+                      <Table.ColumnHeaderCell>Actions</Table.ColumnHeaderCell>
                     </Table.Row>
-                  ))}
-                </Table.Body>
-              </Table.Root>
+                  </Table.Header>
+                  <Table.Body>
+                    {users.map((user) => (
+                      <Table.Row key={user._id}>
+                        <Table.Cell>{user.name}</Table.Cell>
+                        <Table.Cell>{user.email}</Table.Cell>
+                        <Table.Cell>{user.role}</Table.Cell>
+                        <Table.Cell>
+                          <Flex gap="2">
+                            <IconButton onClick={() => handleEditUser(user)} variant="soft">
+                              <FaEdit />
+                            </IconButton>
+                            <IconButton onClick={() => handleDeleteUser(user._id)} color="red" variant="soft">
+                              <FaTrash />
+                            </IconButton>
+                          </Flex>
+                        </Table.Cell>
+                      </Table.Row>
+                    ))}
+                  </Table.Body>
+                </Table.Root>
+              ) : (
+                <p>No users found for this tenant.</p>
+              )}
             </div>
           )}
         </div>
@@ -191,7 +222,7 @@ const TenantUserManagement: React.FC = () => {
       <Dialog.Root open={isUserModalOpen} onOpenChange={setIsUserModalOpen}>
         <Dialog.Content style={{ maxWidth: 450 }}>
           <Dialog.Title>{editingUser ? 'Edit User' : 'Add User'}</Dialog.Title>
-          <form onSubmit={handleCreateUser}>
+          <form onSubmit={handleSaveUser}>
             <Flex direction="column" gap="4">
               <input
                 placeholder="User Name"
@@ -217,15 +248,13 @@ const TenantUserManagement: React.FC = () => {
                 <option value="manager">Manager</option>
                 <option value="agent">Agent</option>
               </select>
-              {!editingUser && (
-                <input
-                  type="password"
-                  placeholder="Password"
-                  value={userPassword}
-                  onChange={(e) => setUserPassword(e.target.value)}
-                  required
-                />
-              )}
+              <input
+                type="password"
+                placeholder={editingUser ? "New Password (leave blank to keep current)" : "Password"}
+                value={userPassword}
+                onChange={(e) => setUserPassword(e.target.value)}
+                required={!editingUser}
+              />
               <Flex gap="3" mt="4" justify="end">
                 <Dialog.Close>
                   <Button variant="soft" color="gray">

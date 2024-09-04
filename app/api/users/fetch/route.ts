@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { auth } from "@/auth";
 import clientPromise from '@/app/lib/mongodb';
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     // Check for a valid session
     const session = await auth();
@@ -10,12 +10,26 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    // Get tenantId from query parameters
+    const url = new URL(request.url);
+    const tenantId = url.searchParams.get('tenantId');
+
+    if (!tenantId) {
+      return NextResponse.json({ error: 'TenantId is required' }, { status: 400 });
+    }
+
+    console.log("tenantId", tenantId);
+
     const client = await clientPromise;
     const db = client.db(process.env.MONGODB_DB_NAME);
     const usersCollection = db.collection('users');
     
-    // Fetch users with role not equal to "superAdmin"
-    const users = await usersCollection.find({ role: { $ne: "superAdmin" } }).toArray();
+    // Fetch users with role not equal to "superAdmin" and matching tenantId
+    const users = await usersCollection.find({ 
+      role: { $ne: "superAdmin" },
+      tenant: parseInt(tenantId)
+    }).toArray();
+
     
     // Convert ObjectId to string for each user
     const serializedUsers = users.map(user => ({
