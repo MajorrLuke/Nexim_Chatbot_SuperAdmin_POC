@@ -47,10 +47,10 @@ export default function SignIn() {
           className="bg-white dark:bg-black rounded-xl p-2 mb-4 border-2 border-[#54428e] dark:border-[#0affed] text-center text-white"
         />
         <input
-          type="Senha"
+          type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
+          placeholder="Senha"
           required
           className="bg-white dark:bg-black rounded-xl p-2 mb-4 border-2 border-[#54428e] dark:border-[#0affed] text-center"
         />
