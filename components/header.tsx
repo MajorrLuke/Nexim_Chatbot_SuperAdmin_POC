@@ -59,7 +59,7 @@ export default function Header() {
 
   return (
     <ThemeProvider>
-      <header className="border-b border-[#0affed] w-full text-sm">
+      <header className="absolute border-b border-[#0affed] w-full text-sm z-1000 bg-white dark:bg-black">
         <div className="flex items-center w-full h-16">
           <div className="w-1/4 flex-shrink-0">
             <ThemeLogo />

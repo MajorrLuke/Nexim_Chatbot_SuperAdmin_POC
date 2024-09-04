@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Button, Flex, Card, Heading, Text } from '@radix-ui/themes';
+import { Button, Flex, Card, Heading, Text, Section } from '@radix-ui/themes';
 import { FaBuilding, FaUsers, FaChartBar, FaCog, FaDatabase, FaFileContract } from 'react-icons/fa';
 import TenantManagement from './components/tenantManagement';
 import CommercialProposals from './components/commercialProposal';
@@ -18,33 +18,32 @@ const SuperAdminPage = () => {
   ];
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Super Admin Dashboard</h1>
-      <Flex gap="4">
+    <Section className='h-screen pt-0 mt-0'>
+      <Flex>
         {/* Side Menu */}
-        <Card className="w-64 h-[calc(100vh-200px)]">
-          <Flex direction="column" gap="2">
+        <Section className="w-1/6 h-screen pt-24 border-r-2 border-gray-300/20 bg-white dark:bg-black">
+          <Flex direction="column" gap="2" className='p-4'>
             {menuItems.map((item) => (
               <Button 
                 key={item.id}
-                variant={activeTab === item.id ? 'solid' : 'ghost'} 
+                variant="ghost"
                 onClick={() => setActiveTab(item.id)}
-                className="justify-start"
+                className={`justify-start cursor-pointer text-black dark:text-white h-8 ${activeTab === item.id ? 'font-bold' : 'font-normal'}`}
               >
                 <item.icon className="mr-2" /> {item.label}
               </Button>
             ))}
           </Flex>
-        </Card>
+        </Section>
 
         {/* Main Content */}
-        <Card className="flex-1 p-6">
+        <Section className="flex-1 h-screen px-6 pt-28 bg-white dark:bg-black">
           {activeTab === 'tenants' && <TenantManagement />}
           {activeTab === 'commercialProposals' && <CommercialProposals />}
           {/* ... other tab content ... */}
-        </Card>
+        </Section>
       </Flex>
-    </div>
+    </Section>
   );
 };
 

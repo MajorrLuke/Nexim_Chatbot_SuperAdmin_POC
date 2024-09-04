@@ -40,7 +40,7 @@ const config = {
         }
       }
     }),
-    Google,
+    //Google,
   ],
   trustHost: true,
   basePath: "/api/auth", // Remove the trailing slash

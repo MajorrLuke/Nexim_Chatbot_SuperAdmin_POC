@@ -13,8 +13,16 @@ export async function POST(req: NextRequest) {
 
   // Hash the password using SHA-256
   const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
-  // Fetch from the 'users' collection
-  const user = await db.collection('users').findOne({ email: email, password: hashedPassword });
+  // Fetch from the 'users' collection and check for superAdmin role
+  const user = await db.collection('users').findOne({ 
+    email: email, 
+    password: hashedPassword,
+    role: "superAdmin"
+  });
 
-  return NextResponse.json(user);
+  if (user) {
+    return NextResponse.json(user);
+  } else {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 }

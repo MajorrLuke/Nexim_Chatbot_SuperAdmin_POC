@@ -23,7 +23,7 @@ export default async function UserButton() {
         </DropdownMenu.Trigger>
         <DropdownMenu.Portal >
           {/* <DropdownMenu.Content className="absolute bg-white/30 dark:bg-gray-800/30 backdrop-blur-md shadow-lg rounded-md overflow-hidden w-46 transition-all duration-200 ease-in-out border border-gray-200/50 dark:border-gray-700/50" align="start"> */}
-          <DropdownMenu.Content className="absolute bg-transparent backdrop-blur-md shadow-lg rounded-md overflow-hidden w-46 transition-all duration-200 ease-in-out border border-gray-200/50 dark:border-gray-700/50" align="start">
+          <DropdownMenu.Content className="absolute -ml-16 bg-transparent backdrop-blur-md shadow-lg rounded-md overflow-hidden w-46 transition-all duration-200 ease-in-out border border-gray-200/50 dark:border-gray-700/50" align="start">
             <DropdownMenu.Label className="p-2 border-b border-gray-200/50 dark:border-gray-700/50">
               <div className="flex flex-col space-y-1">
                 <p className="text-sm font-semibold text-gray-800 dark:text-white">
