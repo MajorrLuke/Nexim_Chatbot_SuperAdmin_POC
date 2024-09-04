@@ -17,8 +17,8 @@ export default function ThemeLogo({
   const { theme } = useTheme()
 
   const logoSrc = theme === 'light' 
-    ? "/logo_horizontal_purple.png" 
-    : "/logo_horizontal.png";
+    ? "/images/logo_horizontal_purple.png" 
+    : "/images/logo_horizontal.png";
 
   return (
     <div 
