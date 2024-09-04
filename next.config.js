@@ -4,12 +4,7 @@ module.exports = {
     return [
       {
         source: '/',
-        destination: '/api/auth/signin?callbackUrl=/superAdmin',
-        permanent: true,
-      },
-      {
-        source: '/auth/signin',
-        destination: '/api/auth/signin?callbackUrl=/superAdmin',
+        destination: '/signin',
         permanent: true,
       },
     ];

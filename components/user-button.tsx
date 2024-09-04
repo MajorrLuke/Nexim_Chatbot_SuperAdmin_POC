@@ -1,12 +1,22 @@
-import { auth } from "auth"
+'use client'
+
+import { useEffect, useState } from "react"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import { Button, Flex, Separator } from "@radix-ui/themes"
-import { SignIn, SignOut } from "./auth-components"
-import { Avatar } from "@radix-ui/themes";
+import { SignOut } from "./auth-components"
+import { Avatar } from "@radix-ui/themes"
+import { useSession } from "next-auth/react"
 
-export default async function UserButton() {
-  const session = await auth()
-  if (!session?.user) return <><SignIn /></>
+export default function UserButton() {
+  const { data: session, status } = useSession()
+
+  if (status === "loading") {
+    return <div>Loading...</div>
+  }
+
+  if (!session) {
+    return null
+  }
 
   return (
     <>
@@ -21,8 +31,7 @@ export default async function UserButton() {
             </Button>
           </div>
         </DropdownMenu.Trigger>
-        <DropdownMenu.Portal >
-          {/* <DropdownMenu.Content className="absolute bg-white/30 dark:bg-gray-800/30 backdrop-blur-md shadow-lg rounded-md overflow-hidden w-46 transition-all duration-200 ease-in-out border border-gray-200/50 dark:border-gray-700/50" align="start"> */}
+        <DropdownMenu.Portal>
           <DropdownMenu.Content className="absolute -ml-16 bg-transparent backdrop-blur-md shadow-lg rounded-md overflow-hidden w-46 transition-all duration-200 ease-in-out border border-gray-200/50 dark:border-gray-700/50" align="start">
             <DropdownMenu.Label className="p-2 border-b border-gray-200/50 dark:border-gray-700/50">
               <div className="flex flex-col space-y-1">

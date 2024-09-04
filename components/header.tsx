@@ -1,59 +1,9 @@
 import UserButton from "./user-button"
-import Link from "next/link"
 import * as NavigationMenu from '@radix-ui/react-navigation-menu'
 import { ThemeProvider } from 'next-themes'
 import ThemeToggle from './themeToggle'
 import ThemeLogo from './image'
-import { Separator } from "@radix-ui/themes"
 import React from "react"
-
-
-// const Trigger = [
-//   {
-//     label: "Gerenciamento de Bots",
-//     items: [
-//       {
-//         label: "Dashboard",
-//         href: "/dashboard"
-//       }
-//     ]
-//   },
-//   // {
-//   //   label: "Playground",
-//   //   items: [
-//   //     {
-//   //       label: "Teste de Chatbot",
-//   //       href: "/playground/chatbot/list"
-//   //     }
-//   //   ]
-//   // },
-//   {
-//     label: "IA",
-//     items: [
-//       {
-//         label: "Base de Conhecimento",
-//         href: "/rag/knowledgeBase"
-//       },
-//       {
-//         label: "Agentes",
-//         href: "/rag/agents"
-//       },
-//     ]
-//   },
-//   {
-//     label: "Sistema",
-//     items: [
-//       {
-//         label: "Gerenciar usuários",
-//         href: "/users/management"
-//       },
-//     ]
-//   },
-//   {
-//     label: "Relatórios",
-//     href: "/analytics"
-//   }
-// ]
 
 export default function Header() {
 

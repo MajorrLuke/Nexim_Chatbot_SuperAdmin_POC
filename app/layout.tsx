@@ -21,8 +21,7 @@ export default async function RootLayout({ children }: React.PropsWithChildren) 
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme='dark' enableSystem={false}>
           <Theme>
-            <ToastProvider>
-              <Header />
+            <ToastProvider>              
               <SessionProvider>
                 {children}
               </SessionProvider>

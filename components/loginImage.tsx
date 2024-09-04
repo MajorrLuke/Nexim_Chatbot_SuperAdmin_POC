@@ -2,23 +2,23 @@
 import { useTheme } from 'next-themes'
 import Image from 'next/image';
 
-interface ThemeLogoProps {
+interface LoginLogoProps {
   className?: string;
   width?: number;
   height?: number;
   href?: string;
 }
 
-export default function ThemeLogo({ 
+export default function LoginLogo({ 
   className = '', 
-  width = 130, 
-  height = 130, 
-}: ThemeLogoProps) {
+  width = 100, 
+  height = 100, 
+}: LoginLogoProps) {
   const { theme } = useTheme()
 
   const logoSrc = theme === 'light' 
-    ? "/logo_horizontal_purple.png" 
-    : "/logo_horizontal.png";
+    ? "/images/login_logo_purple.png" 
+    : "/images/login_logo_white.png";
 
   return (
     <div 
