@@ -10,9 +10,9 @@ import { SessionProvider } from "next-auth/react"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Nexim Chatbot",
+  title: "Nexim Super Admin",
   description:
-    "Nexim Chatbot",
+    "Nexim Super Admin",
 }
 
 export default async function RootLayout({ children }: React.PropsWithChildren) {
