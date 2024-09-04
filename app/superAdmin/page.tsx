@@ -5,13 +5,14 @@ import { Button, Flex, Card, Heading, Text, Section } from '@radix-ui/themes';
 import { FaBuilding, FaUsers, FaChartBar, FaCog, FaDatabase, FaFileContract } from 'react-icons/fa';
 import TenantManagement from './components/tenantManagement';
 import CommercialProposals from './components/commercialProposal';
+import TenantUserManagement from './components/tenantUserManagement';
 const SuperAdminPage = () => {
   const [activeTab, setActiveTab] = useState('tenants');
 
   const menuItems = [
     { id: 'tenants', label: 'Tenant Management', icon: FaBuilding },
+    { id: 'users', label: 'Tenant User Management', icon: FaUsers },
     { id: 'commercialProposals', label: 'Commercial Proposals', icon: FaFileContract },
-    { id: 'users', label: 'Global User Management', icon: FaUsers },
     { id: 'analytics', label: 'System Analytics', icon: FaChartBar },
     { id: 'settings', label: 'System Settings', icon: FaCog },
     { id: 'database', label: 'Database Management', icon: FaDatabase },
@@ -39,6 +40,7 @@ const SuperAdminPage = () => {
         {/* Main Content */}
         <Section className="flex-1 h-screen px-6 pt-28 bg-white dark:bg-black">
           {activeTab === 'tenants' && <TenantManagement />}
+          {activeTab === 'users' && <TenantUserManagement />}
           {activeTab === 'commercialProposals' && <CommercialProposals />}
           {/* ... other tab content ... */}
         </Section>

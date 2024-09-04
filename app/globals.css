@@ -104,3 +104,12 @@
 .dark .rdp-day_range_middle {
   background-color: rgba(10, 255, 237, 0.2) !important;
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
