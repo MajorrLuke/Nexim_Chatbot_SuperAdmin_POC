@@ -61,11 +61,11 @@ const CommercialProposal: React.FC = () => {
     fetchProposals();
   }, []);
 
-  const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+  const apiBaseUrl = process.env.PUBLIC_URL || 'http://localhost:3000';
 
   const fetchProposals = async () => {
     try {
-      const response = await fetch(`${process.env.PUBLIC_URL}/api/commercial/proposals/fetch`);
+      const response = await fetch(`${apiBaseUrl}/api/commercial/proposals/fetch`);
       if (response.ok) {
         const data = await response.json();
         setProposals(data);
@@ -115,8 +115,8 @@ const CommercialProposal: React.FC = () => {
 
     try {
       const url = editingProposal
-        ? `${process.env.PUBLIC_URL}/api/commercial/proposals/edit/?id=${editingProposal.id}` // Use editingProposal.id here
-        : `${process.env.PUBLIC_URL}/api/commercial/proposals/create`;
+        ? `${apiBaseUrl}/api/commercial/proposals/edit/?id=${editingProposal.id}` // Use editingProposal.id here
+        : `${apiBaseUrl}/api/commercial/proposals/create`;
       const method = editingProposal ? 'PUT' : 'POST';
 
       const response = await fetch(url, {
@@ -148,7 +148,7 @@ const CommercialProposal: React.FC = () => {
     if (!proposalToDelete) return;
 
     try {
-      const response = await fetch(`${process.env.PUBLIC_URL}/api/commercial/proposals/delete?id=${proposalToDelete._id}`, {
+      const response = await fetch(`${apiBaseUrl}/api/commercial/proposals/delete?id=${proposalToDelete._id}`, {
         method: 'DELETE',
       });
       if (response.ok) {
