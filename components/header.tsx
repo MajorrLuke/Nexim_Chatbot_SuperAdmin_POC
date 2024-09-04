@@ -8,52 +8,52 @@ import { Separator } from "@radix-ui/themes"
 import React from "react"
 
 
-const Trigger = [
-  {
-    label: "Gerenciamento de Bots",
-    items: [
-      {
-        label: "Dashboard",
-        href: "/dashboard"
-      }
-    ]
-  },
-  // {
-  //   label: "Playground",
-  //   items: [
-  //     {
-  //       label: "Teste de Chatbot",
-  //       href: "/playground/chatbot/list"
-  //     }
-  //   ]
-  // },
-  {
-    label: "IA",
-    items: [
-      {
-        label: "Base de Conhecimento",
-        href: "/rag/knowledgeBase"
-      },
-      {
-        label: "Agentes",
-        href: "/rag/agents"
-      },
-    ]
-  },
-  {
-    label: "Sistema",
-    items: [
-      {
-        label: "Gerenciar usuários",
-        href: "/users/management"
-      },
-    ]
-  },
-  {
-    label: "Relatórios",
-    href: "/analytics"
-  }
-]
+// const Trigger = [
+//   {
+//     label: "Gerenciamento de Bots",
+//     items: [
+//       {
+//         label: "Dashboard",
+//         href: "/dashboard"
+//       }
+//     ]
+//   },
+//   // {
+//   //   label: "Playground",
+//   //   items: [
+//   //     {
+//   //       label: "Teste de Chatbot",
+//   //       href: "/playground/chatbot/list"
+//   //     }
+//   //   ]
+//   // },
+//   {
+//     label: "IA",
+//     items: [
+//       {
+//         label: "Base de Conhecimento",
+//         href: "/rag/knowledgeBase"
+//       },
+//       {
+//         label: "Agentes",
+//         href: "/rag/agents"
+//       },
+//     ]
+//   },
+//   {
+//     label: "Sistema",
+//     items: [
+//       {
+//         label: "Gerenciar usuários",
+//         href: "/users/management"
+//       },
+//     ]
+//   },
+//   {
+//     label: "Relatórios",
+//     href: "/analytics"
+//   }
+// ]
 
 export default function Header() {
 
@@ -66,7 +66,7 @@ export default function Header() {
           </div>
           <NavigationMenu.Root className="w-1/2 flex justify-center">
             <NavigationMenu.List className="flex space-x-2">
-              {Trigger.map((trigger, index) => (
+              {/* Trigger.map((trigger, index) => (
                 <NavigationMenu.Item key={index}>
                   {trigger.items ? (
                     <>
@@ -96,7 +96,7 @@ export default function Header() {
                     </Link>
                   )}
                 </NavigationMenu.Item>
-              ))}
+              ))} */}
             </NavigationMenu.List>
           </NavigationMenu.Root>
           <div className="w-1/4 flex justify-end items-center space-x-2">

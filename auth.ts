@@ -45,16 +45,6 @@ const config = {
   trustHost: true,
   basePath: "/api/auth", // Remove the trailing slash
   callbacks: {
-    authorized({ request, auth }) {
-      const { pathname } = request.nextUrl
-      if (pathname.startsWith("/dashboard") ||
-          pathname.startsWith("/playground") ||
-          pathname.startsWith("/rag") ||
-          pathname.startsWith("/users")) {
-        return !!auth
-      }
-      return true
-    },
     async jwt({ token, user, account }) {
       if (user) {
         token.role = user.role as string;
